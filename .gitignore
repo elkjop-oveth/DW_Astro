@@ -136,3 +136,13 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Astro CLI generated
+.git
+.DS_Store # macOS specific ignore
+airflow_settings.yaml
+astro
+airflow-webserver.pid
+webserver_config.py
+airflow.cfg
+airflow.db
