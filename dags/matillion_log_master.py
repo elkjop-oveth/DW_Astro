@@ -16,7 +16,7 @@ dag = DAG('Matillion_Log', description='Matillion_Log_master job',
 
 m_Start = EmptyOperator(task_id='Start', dag=dag)
 m_End = EmptyOperator(task_id='End', trigger_rule='all_done', dag=dag)
-m_Matillion_Log = EmptyOperator(task_id='Matillion_Log', job_name='Matillion_Log', dag=dag)
+m_Matillion_Log = EmptyOperator(task_id='matillion_log_master', job_name='matillion_log_master', dag=dag)
 
 m_Matillion_Log << m_Start
 m_End << m_Matillion_Log
