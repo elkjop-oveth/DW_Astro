@@ -5,7 +5,7 @@ from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
 
-dag = DAG('nightly_build', description='DW nightly batch execution',
+dag = DAG('dagtest', description='DW nightly batch execution',
           schedule_interval=None,
           start_date=pendulum.datetime(2022, 10, 25, tz="Europe/Oslo"),
           max_active_runs=1,
