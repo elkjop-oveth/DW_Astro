@@ -6,7 +6,7 @@ from airflow.operators.empty import EmptyOperator
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
 
 dag = DAG('Matillion_Log', description='Matillion_Log_master job',
-          schedule_interval="*	5,15,25,35,45,55 * * *",
+          schedule_interval="* 5,15,25,35,45,55 * * *",
           start_date=pendulum.datetime(2023, 11, 21, tz="Europe/Oslo"),
           max_active_runs=1,
           concurrency=8,
