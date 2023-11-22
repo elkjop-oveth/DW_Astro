@@ -5,8 +5,8 @@ from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
 
-dag = DAG('LOG_ANALYTICS_Master', description='LOG_ANALYTICS_Master matillion job',
-          schedule_interval="11 * * * *",
+dag = DAG('DW_QI_BLOCKED_STOCK', description='DW_QI_BLOCKED_STOCK matillion job',
+          schedule_interval="0,10,20,30,40,50 * * * *",
           start_date=pendulum.datetime(2023, 11, 22, tz="Europe/Oslo"),
           max_active_runs=1,
           concurrency=8,
@@ -16,7 +16,9 @@ dag = DAG('LOG_ANALYTICS_Master', description='LOG_ANALYTICS_Master matillion jo
 
 m_Start = EmptyOperator(task_id='Start', dag=dag)
 m_End = EmptyOperator(task_id='End', trigger_rule='all_done', dag=dag)
-m_LOG_ANALYTICS_Master = MatillionTriggerSyncOperator(task_id='LOG_ANALYTICS_Master', job_name='LOG_ANALYTICS_Master', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done', dag=dag)
+m_DW_QI_BLOCKED_STOCK = MatillionTriggerSyncOperator(task_id='DW_QI_BLOCKED_STOCK', job_name='DW_QI_BLOCKED_STOCK', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done', dag=dag)
 
-m_LOG_ANALYTICS_Master << m_Start
-m_End << m_LOG_ANALYTICS_Master
+m_DW_QI_BLOCKED_STOCK << m_Start
+m_End << m_DW_QI_BLOCKED_STOCK
+
+

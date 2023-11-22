@@ -5,8 +5,8 @@ from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
 
-dag = DAG('LOG_ANALYTICS_Master', description='LOG_ANALYTICS_Master matillion job',
-          schedule_interval="11 * * * *",
+dag = DAG('DW_PICK_AND_PACK', description='DW_PICK_AND_PACK matillion job',
+          schedule_interval="15 06,08,11,13,15,17,19,21 * * *",
           start_date=pendulum.datetime(2023, 11, 22, tz="Europe/Oslo"),
           max_active_runs=1,
           concurrency=8,
@@ -16,7 +16,8 @@ dag = DAG('LOG_ANALYTICS_Master', description='LOG_ANALYTICS_Master matillion jo
 
 m_Start = EmptyOperator(task_id='Start', dag=dag)
 m_End = EmptyOperator(task_id='End', trigger_rule='all_done', dag=dag)
-m_LOG_ANALYTICS_Master = MatillionTriggerSyncOperator(task_id='LOG_ANALYTICS_Master', job_name='LOG_ANALYTICS_Master', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done', dag=dag)
+m_DW_PICK_AND_PACK = MatillionTriggerSyncOperator(task_id='DW_PICK_AND_PACK', job_name='DW_PICK_AND_PACK', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done', dag=dag)
 
-m_LOG_ANALYTICS_Master << m_Start
-m_End << m_LOG_ANALYTICS_Master
+m_DW_PICK_AND_PACK << m_Start
+m_End << m_DW_PICK_AND_PACK
+
