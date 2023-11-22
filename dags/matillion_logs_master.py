@@ -5,7 +5,7 @@ from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
 
-dag = DAG('Matillion_Log', description='Matillion_Log_master job',
+dag = DAG('MATILLION_LOGS_Master', description='MATILLION_LOGS_Master matillion job',
           schedule_interval="5,15,25,35,45,55 * * * *",
           start_date=pendulum.datetime(2023, 11, 21, tz="Europe/Oslo"),
           max_active_runs=1,
@@ -16,7 +16,8 @@ dag = DAG('Matillion_Log', description='Matillion_Log_master job',
 
 m_Start = EmptyOperator(task_id='Start', dag=dag)
 m_End = EmptyOperator(task_id='End', trigger_rule='all_done', dag=dag)
-m_Matillion_Log = EmptyOperator(task_id='mat_matillion_log_master', dag=dag)
+m_Matillions_Log = EmptyOperator(task_id='mat_matillion_log_master', dag=dag)
+m_Matillions_Log = MatillionTriggerSyncOperator(task_id='MATILLION_LOGS_Master', job_name='MATILLION_LOGS_Master', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done', dag=dag)
 
-m_Matillion_Log << m_Start
-m_End << m_Matillion_Log
+m_Matillions_Log << m_Start
+m_End << m_Matillions_Log
