@@ -7,7 +7,7 @@ from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTr
 
 dag = DAG('DW_QI_BLOCKED_STOCK', description='DW_QI_BLOCKED_STOCK matillion job',
           schedule_interval="0,10,20,30,40,50 * * * *",
-          start_date=pendulum.datetime(2023, 11, 22, tz="Europe/Oslo"),
+          start_date=pendulum.datetime(2023, 12, 20, tz="Europe/Oslo"),
           max_active_runs=1,
           concurrency=8,
           tags=["Matillion"],

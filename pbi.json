@@ -1,0 +1,329 @@
+{
+    "name": "Customer Counter",
+    "columns": [
+        {
+            "name": "CHANNELID",
+            "dataType": "Int64",
+            "isHidden": true,
+            "columnType": "Data"
+        },
+        {
+            "name": "Date",
+            "dataType": "DateTime",
+            "isHidden": true,
+            "columnType": "Data"
+        },
+        {
+            "name": "DEPID",
+            "dataType": "Int64",
+            "isHidden": true,
+            "columnType": "Data"
+        },
+        {
+            "name": "HOURID",
+            "dataType": "Int64",
+            "isHidden": true,
+            "columnType": "Data"
+        },
+        {
+            "name": "NOCUST",
+            "dataType": "Int64",
+            "isHidden": true,
+            "columnType": "Data"
+        },
+        {
+            "name": "YESNOID_B2BINDICATOR",
+            "dataType": "Boolean",
+            "isHidden": true,
+            "columnType": "Data"
+        },
+        {
+            "name": "NOORD",
+            "dataType": "Int64",
+            "isHidden": true,
+            "columnType": "Data"
+        }
+    ],
+    "measures": [
+        {
+            "name": "Customer Count",
+            "expression": "SUM('Customer Counter'[NOCUST])",
+            "isHidden": false
+        },
+        {
+            "name": "Customer LY Count",
+            "expression": "IF(\n    [Sales ShowValueForDates],\n    SUMX(\n        VALUES( '1 Date'[FISCALYEARNUMBER] ),\n        \n        VAR CurrentFiscalYearNumber =  '1 Date'[FISCALYEARNUMBER]\n        VAR daysSelected = CALCULATETABLE(\n            VALUES('1 Date'[FISCALDAYOFYEARNUMBER]) \n        )\n\n        RETURN \n            CALCULATE([Customer Count]\n            , '1 Date'[FISCALYEARNUMBER] = CurrentFiscalYearNumber - 1\n            , daysSelected\n            , REMOVEFILTERS('1 Relative Date')\n            , REMOVEFILTERS('1 Date')\n            )\n\n    )\n)",
+            "isHidden": false
+        },
+        {
+            "name": "Customer  LY Conversion Rate %",
+            "expression": "DIVIDE( [Customer LY Number of Orders],  [Customer LY Count])",
+            "isHidden": false
+        },
+        {
+            "name": "Customer Conversion Rate % Variance",
+            "expression": "[Customer Conversion Rate %] - [Customer  LY Conversion Rate %]",
+            "isHidden": false
+        },
+        {
+            "name": "Customer Conversion Rate %",
+            "expression": "DIVIDE( [Customer Number of Orders],  [Customer Count])",
+            "isHidden": false
+        },
+        {
+            "name": "Customer Count Variance",
+            "expression": "[Customer Count] - [Customer LY Count]",
+            "isHidden": false
+        },
+        {
+            "name": "Customer LY Number of Orders",
+            "expression": "IF(\n    [Sales ShowValueForDates],\n    SUMX(\n        VALUES( '1 Date'[FISCALYEARNUMBER] ),\n        \n        VAR CurrentFiscalYearNumber =  '1 Date'[FISCALYEARNUMBER]\n        VAR daysSelected = CALCULATETABLE(\n            VALUES('1 Date'[FISCALDAYOFYEARNUMBER]) \n        )\n\n        RETURN \n            CALCULATE([Customer Number of Orders]\n            , '1 Date'[FISCALYEARNUMBER] = CurrentFiscalYearNumber - 1\n            , daysSelected\n            , REMOVEFILTERS('1 Relative Date')\n            , REMOVEFILTERS('1 Date')\n            )\n\n    )\n)",
+            "isHidden": true
+        },
+        {
+            "name": "Customer Number of Orders",
+            "expression": "SUM( 'Customer Counter'[NOORD] )",
+            "isHidden": true
+        },
+        {
+            "name": "Customer Count Variance %",
+            "expression": "DIVIDE( [Customer Count Variance], [Customer Count] )",
+            "isHidden": false
+        },
+        {
+            "name": "Customer SOB",
+            "expression": "DIVIDE(\n    [Customer Count],\n    CALCULATE( [Customer Count], ALLSELECTED() )\n)",
+            "isHidden": false
+        }
+    ],
+    "isHidden": false,
+    "source": [
+        {
+            "expression": "let\n    Source = Snowflake.Databases(\"elkjop.west-europe.azure.snowflakecomputing.com\",\"ELT_WH\"),\n    Database = Source{[Name=\"DW\",Kind=\"Database\"]}[Data],\n    Schema = Database{[Name=\"BI_DATALAYER\",Kind=\"Schema\"]}[Data],\n    Data = Schema{[Name=\"FACT Customer Counter\",Kind=\"View\"]}[Data],\n\t#\"Filtered Rows\" = Table.SelectRows(Data, each [Date] >= Date.StartOfMonth(Date.AddMonths(DateTime.Date(DateTime.FixedLocalNow()), -25)))\nin\n    #\"Filtered Rows\"\n"
+        }
+    ]
+},
+{
+                            "name": "Sales - Attributes",
+                            "columns": [
+                                {
+                                    "name": "COMMISION",
+                                    "dataType": "Double",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "COMPENSATIONID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "CURRENCYID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "Date",
+                                    "dataType": "DateTime",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "DELIVERYCHANNELID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "DEPID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "DISCOUNTREASONID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "DISTRIBUTIONCHANNELID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "EMPLOYEEID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "FREIGHTTYPEID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "HOURID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "Is Added Sales",
+                                    "dataType": "Boolean",
+                                    "isHidden": false,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "Is Collect At Store",
+                                    "dataType": "Boolean",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "Is Delivered",
+                                    "dataType": "String",
+                                    "isHidden": false,
+                                    "expression": "LOOKUPVALUE(\n    FACT_SALE_ORDER_LINE_INFO_VIEW[YESNOID_DELIVERED],\n    FACT_SALE_ORDER_LINE_INFO_VIEW[DEPID],\n    'Sales - Attributes'[DEPID],\n    FACT_SALE_ORDER_LINE_INFO_VIEW[ORDERNO],\n    'Sales - Attributes'[Order Number],\n    FACT_SALE_ORDER_LINE_INFO_VIEW[LINENO],\n    'Sales - Attributes'[Order Line Number],\n    TRUE( )\n)",
+                                    "columnType": "Calculated"
+                                },
+                                {
+                                    "name": "Is Direct Online Sales",
+                                    "dataType": "Boolean",
+                                    "isHidden": false,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "Is Nearby Store Sale",
+                                    "dataType": "Boolean",
+                                    "isHidden": false,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "Is Reversed Order",
+                                    "dataType": "Boolean",
+                                    "isHidden": false,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "Is Served By Seller",
+                                    "dataType": "Boolean",
+                                    "isHidden": false,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "MASTERITEMID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "ORDERREASONID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "QTYSOLD",
+                                    "dataType": "Double",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "SALESCHANNELID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "SALETRANSACTIONTYPEID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "SOURCESYSTEMID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "STOCKCHANNELID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "VALDISCOUNT",
+                                    "dataType": "Double",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "VALGMRETAIL",
+                                    "dataType": "Double",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "VALREVEX_INC_COMMISION",
+                                    "dataType": "Double",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "YESNOID_B2BINDICATOR",
+                                    "dataType": "Boolean",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "YESNOID_FIRSTORDER_LINENO",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "YESNOID_RANGE",
+                                    "dataType": "Boolean",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "CUSTOMERCLUBID",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "VALREVINC_INC_COMMISION",
+                                    "dataType": "Double",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "DEPID_RESPONSIBLESTORE",
+                                    "dataType": "Int64",
+                                    "isHidden": true,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "Order Line Number",
+                                    "dataType": "Int64",
+                                    "isHidden": false,
+                                    "columnType": "Data"
+                                },
+                                {
+                                    "name": "Order Number",
+                                    "dataType": "Int64",
+                                    "isHidden": false,
+                                    "columnType": "Data"
+                                }
+                            ],
+                            "measures": [],
+                            "isHidden": false
+                        },
