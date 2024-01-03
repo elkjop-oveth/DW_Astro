@@ -66,7 +66,7 @@ class MatillionHook(HttpHook):
             extra_options=self.extra_options,
         )
 
-        self.log.debug("submit_sync_connection result: " + str(job.json()))
+        self.log.info("submit_sync_connection result: " + str(job.json()))
 
         return job
 
@@ -121,7 +121,7 @@ class MatillionHook(HttpHook):
             extra_options=self.extra_options,
         )
     
-        self.log.debug("job: " + str(job.json()))
+        self.log.info("job: " + str(job.json()))
         return job
 
     def cancel_job(self, job_id: int) -> Any:
