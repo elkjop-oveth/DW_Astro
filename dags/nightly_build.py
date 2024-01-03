@@ -10,7 +10,7 @@ dag = DAG('DW_nightly_build', description='Matillion nightly execution',
           schedule_interval=None,
           start_date=pendulum.datetime(2023, 10, 31, tz="Europe/Oslo"),
           max_active_runs=1,
-          concurrency=8,
+          concurrency=6,
           catchup=False
           )
 
