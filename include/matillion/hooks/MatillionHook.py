@@ -47,7 +47,7 @@ class MatillionHook(HttpHook):
         self.project_name: str = project_name
         self.job_name: str = job_name
         self.environment_Name: str = environment_Name
-        self.extra_options={"verify": False}
+        self.extra_options={"verify": False,"timeout": 60}
 
     def submit_sync_connection(self) -> Any:
         """
