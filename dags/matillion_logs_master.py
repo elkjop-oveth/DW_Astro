@@ -16,8 +16,6 @@ dag = DAG('MATILLION_LOGS_Master', description='MATILLION_LOGS_Master matillion 
           )
 
 m_Start = EmptyOperator(task_id='Start', dag=dag)
-m_End = EmptyOperator(task_id='End', trigger_rule='all_done', dag=dag)
 m_Matillions_Log = MatillionTriggerSyncOperator(task_id='MATILLION_LOGS_Master', job_name='MATILLION_LOGS_Master', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done',execution_timeout=timedelta(minutes=8), dag=dag)
 
 m_Matillions_Log << m_Start
-m_End << m_Matillions_Log
