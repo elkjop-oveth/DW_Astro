@@ -15,10 +15,6 @@ dag = DAG('DW_QI_BLOCKED_STOCK', description='DW_QI_BLOCKED_STOCK matillion job'
           )
 
 m_Start = EmptyOperator(task_id='Start', dag=dag)
-m_End = EmptyOperator(task_id='End', trigger_rule='all_done', dag=dag)
 m_DW_QI_BLOCKED_STOCK = MatillionTriggerSyncOperator(task_id='DW_QI_BLOCKED_STOCK', job_name='DW_QI_BLOCKED_STOCK', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done', dag=dag)
 
 m_DW_QI_BLOCKED_STOCK << m_Start
-m_End << m_DW_QI_BLOCKED_STOCK
-
-
