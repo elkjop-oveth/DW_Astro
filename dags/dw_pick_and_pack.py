@@ -3,7 +3,7 @@ from datetime import datetime
 import pendulum
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
-from airflow.timetables.trigger import CronDataIntervalTimetable
+from airflow.timetables import CronDataIntervalTimetable
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
 
 dag = DAG('DW_PICK_AND_PACK', description='DW_PICK_AND_PACK matillion job',
