@@ -4,6 +4,7 @@ from datetime import timedelta
 import pendulum
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
+from airflow.timetables.trigger import CronTriggerTimetable
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
 
 dag = DAG('MATILLION_LOGS_Master', description='MATILLION_LOGS_Master matillion job',
