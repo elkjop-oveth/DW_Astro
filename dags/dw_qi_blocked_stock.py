@@ -3,10 +3,10 @@ from datetime import datetime
 import pendulum
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
+from airflow.timetables.interval import CronDataIntervalTimetable
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
-
 dag = DAG('DW_QI_BLOCKED_STOCK', description='DW_QI_BLOCKED_STOCK matillion job',
-          schedule_interval="0,10,20,30,40,50 * * * *",
+          schedule=CronDataIntervalTimetable("0,10,20,30,40,50 * * * *", timezone="Europe/Oslo"),
           start_date=pendulum.datetime(2023, 12, 20, tz="Europe/Oslo"),
           max_active_runs=1,
           concurrency=8,

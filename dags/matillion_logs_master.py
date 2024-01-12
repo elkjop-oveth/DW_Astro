@@ -4,11 +4,11 @@ from datetime import timedelta
 import pendulum
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
-from airflow.timetables.trigger import CronTriggerTimetable
+from airflow.timetables.interval import CronDataIntervalTimetable
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
 
 dag = DAG('MATILLION_LOGS_Master', description='MATILLION_LOGS_Master matillion job',
-          schedule=CronTriggerTimetable("5,15,25,35,45,55 * * * *", timezone="Europe/Oslo"),
+          schedule=CronDataIntervalTimetable("15 06,08,11,13,15,17,19,21 * * *", timezone="Europe/Oslo"),
           start_date=pendulum.datetime(2024, 1, 11, tz="Europe/Oslo"),
           max_active_runs=1,
           concurrency=8,
