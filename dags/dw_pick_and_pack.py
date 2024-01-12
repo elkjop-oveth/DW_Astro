@@ -6,8 +6,8 @@ from airflow.operators.empty import EmptyOperator
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
 
 dag = DAG('DW_PICK_AND_PACK', description='DW_PICK_AND_PACK matillion job',
-          schedule_interval="15 06,08,11,13,15,17,19,21 * * *",
-          start_date=pendulum.datetime(2023, 12, 20, tz="Europe/Oslo"),
+          schedule=CronDataIntervalTimetable("15 06,08,11,13,15,17,19,21 * * *", timezone="Europe/Oslo"),
+          start_date=pendulum.datetime(2024, 1, 10, tz="Europe/Oslo"),
           max_active_runs=1,
           concurrency=8,
           tags=["Matillion"],
