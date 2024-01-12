@@ -3,10 +3,11 @@ from datetime import datetime
 import pendulum
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
+from airflow.timetables.interval import CronDataIntervalTimetable
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
-
 dag = DAG('GA4_intraday_Main', description='GA4_intraday_Main matillion job',
           schedule_interval="3 * * * *",
+          schedule=CronDataIntervalTimetable("3 * * * *", timezone="Europe/Oslo"),
           start_date=pendulum.datetime(2023, 12, 20, tz="Europe/Oslo"),
           max_active_runs=1,
           concurrency=8,

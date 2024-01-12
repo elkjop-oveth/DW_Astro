@@ -3,8 +3,8 @@ from datetime import datetime
 import pendulum
 from airflow import DAG
 from airflow.operators.empty import EmptyOperator
+from airflow.timetables.interval import CronDataIntervalTimetable
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
-
 dag = DAG('dagtest', description='DW nightly batch execution',
           schedule_interval=None,
           start_date=pendulum.datetime(2022, 10, 25, tz="Europe/Oslo"),
