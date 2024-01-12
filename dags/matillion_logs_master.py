@@ -9,7 +9,7 @@ from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTr
 
 dag = DAG('MATILLION_LOGS_Master', description='MATILLION_LOGS_Master matillion job',
           schedule=CronTriggerTimetable("5,15,25,35,45,55 * * * *", timezone="Europe/Oslo"),
-          start_date=pendulum.datetime(2024, 01, 11, tz="Europe/Oslo"),
+          start_date=pendulum.datetime(2024, 1, 11, tz="Europe/Oslo"),
           max_active_runs=1,
           concurrency=8,
           tags=["Matillion"],
