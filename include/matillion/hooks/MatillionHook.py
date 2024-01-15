@@ -81,7 +81,7 @@ class MatillionHook(HttpHook):
 
         return job
 
-    def wait_for_job(self, job_id: str | int, wait_seconds: float = 3, timeout: float | None = 14400) -> None:
+    def wait_for_job(self, job_id: str | int, wait_seconds: float = 10, timeout: float | None = 14400) -> None:
         """
         Poll a job to check if it finishes.
 
