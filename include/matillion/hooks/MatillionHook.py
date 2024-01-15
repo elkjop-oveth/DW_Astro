@@ -22,7 +22,7 @@ from typing import Any
 
 from airflow.exceptions import AirflowException
 from airflow.providers.http.hooks.http import HttpHook
-# from tenacity import tenacity
+import tenacity
 
 
 class MatillionHook(HttpHook):
@@ -59,7 +59,14 @@ class MatillionHook(HttpHook):
         self.method = "POST"
         enpoint = f"rest/v1/group/name/" + self.group_name + "/project/name/" + self.project_name + "/version/name/default/job/name/" + self.job_name + "/run?environmentName=" + self.environment_Name
         self.log.info("Submiting sync connection:" + enpoint)
-        job = self.run(
+        
+        retry_args = dict(
+            wait=tenacity.wait_exponential(multiplier=1, min=4, max=10),
+            stop=tenacity.stop_after_attempt(3),
+            retry=tenacity.retry_if_exception_type(Exception),
+        )
+
+        job = self.run_with_advanced_retry(
             endpoint=enpoint,
             headers={
                 "accept": "application/json",
@@ -67,6 +74,7 @@ class MatillionHook(HttpHook):
                 'Content-Type': 'application/json'                     
             },
             extra_options=self.extra_options,
+            _retry_args=retry_args,
         )
 
         self.log.info("submit_sync_connection result: " + str(job.json()))
