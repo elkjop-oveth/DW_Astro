@@ -112,6 +112,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+astro_ve/
 
 # Spyder project settings
 .spyderproject
