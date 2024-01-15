@@ -1,0 +1,1 @@
+Only here to force GIT to keep the plugins folder, this folder is needed for local development, if not found "astro dev start" will fail

@@ -22,6 +22,7 @@ from typing import Any
 
 from airflow.exceptions import AirflowException
 from airflow.providers.http.hooks.http import HttpHook
+# from tenacity import tenacity
 
 
 class MatillionHook(HttpHook):
@@ -56,8 +57,10 @@ class MatillionHook(HttpHook):
         :param connection_id: Required. The ConnectionId of the Matillion Connection.
         """
         self.method = "POST"
+        enpoint = f"rest/v1/group/name/" + self.group_name + "/project/name/" + self.project_name + "/version/name/default/job/name/" + self.job_name + "/run?environmentName=" + self.environment_Name
+        self.log.info("Submiting sync connection:" + enpoint)
         job = self.run(
-            endpoint=f"rest/v1/group/name/" + self.group_name + "/project/name/" + self.project_name + "/version/name/default/job/name/" + self.job_name + "/run?environmentName=" + self.environment_Name,
+            endpoint=enpoint,
             headers={
                 "accept": "application/json",
                 'X-Requested-By': 'airflow',
