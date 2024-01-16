@@ -45,7 +45,7 @@ class MatillionTriggerSyncOperator(BaseOperator):
         job_name: str,
         environment_name: str,
         matillion_conn_id: str = "Matillion",
-        wait_seconds: float = 3,
+        wait_seconds: float = 15,
         timeout: float = 3600,
         **kwargs,
     ) -> None:
