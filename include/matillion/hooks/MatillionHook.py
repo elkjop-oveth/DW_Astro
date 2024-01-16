@@ -81,7 +81,7 @@ class MatillionHook(HttpHook):
 
         return job
 
-    def wait_for_job(self, job_id: str | int, wait_seconds: float = 10, timeout: float | None = 14400) -> None:
+    def wait_for_job(self, job_id: str | int, wait_seconds: float = 15, timeout: float | None = 14400) -> None:
         """
         Poll a job to check if it finishes.
 
@@ -122,14 +122,22 @@ class MatillionHook(HttpHook):
         :param job_id: Required. Id of the Airbyte job
         """
         self.method = "GET"
-        job = self.run(
-            endpoint=f"rest/v1/group/name/" + self.group_name + "/project/name/" + self.project_name + "/task/id/" + str(job_id),
+        endpoint=f"rest/v1/group/name/" + self.group_name + "/project/name/" + self.project_name + "/task/id/" + str(job_id)
+        retry_args = dict(
+            wait=tenacity.wait_exponential(multiplier=1, min=4, max=10),
+            stop=tenacity.stop_after_attempt(3),
+            retry=tenacity.retry_if_exception_type(Exception),
+        )
+
+        job = self.run_with_advanced_retry(
+            endpoint=endpoint,
             headers={
                 "accept": "application/json",
                 'X-Requested-By': 'airflow',
                 'Content-Type': 'application/json'                     
             },
             extra_options=self.extra_options,
+            _retry_args=retry_args,
         )
     
         self.log.info("job: " + str(job.json()))
@@ -142,14 +150,22 @@ class MatillionHook(HttpHook):
         :param job_id: Required. Id of the Airbyte job
         """
         self.method = "POST"
-        job = self.run(
-            endpoint=f"rest/v1/group/name/" + self.group_name + "/project/name/" + self.project_name + "/task/id/" + str(job_id) + "/cancel",
+        endpoint=f"rest/v1/group/name/" + self.group_name + "/project/name/" + self.project_name + "/task/id/" + str(job_id) + "/cancel"
+        retry_args = dict(
+            wait=tenacity.wait_exponential(multiplier=1, min=4, max=10),
+            stop=tenacity.stop_after_attempt(3),
+            retry=tenacity.retry_if_exception_type(Exception),
+        )
+
+        job = self.run_with_advanced_retry(
+            endpoint=endpoint,
             headers={
                 "accept": "application/json",
                 'X-Requested-By': 'airflow',
                 'Content-Type': 'application/json'                     
             },
             extra_options=self.extra_options,
+            _retry_args=retry_args,
         )
 
         self.log.info("job canceled in Airflow, canceling in Matillion: " + str(job.json()))
