@@ -15,6 +15,10 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+
+# Source code based on Airbyte code https://airflow.apache.org/docs/apache-airflow-providers-airbyte/1.0.0/_api/airflow/providers/airbyte/index.html
+
+
 from __future__ import annotations
 
 import time
@@ -30,9 +34,6 @@ import certifi
 class MatillionHook(HttpHook):
 
     conn_name_attr = "matillion"
-    #default_conn_name = "airbyte_default"
-    #conn_type = "airbyte"
-    #hook_name = "Airbyte"
 
     RUNNING = "RUNNING"
     SUCCESS = "SUCCESS"
@@ -40,8 +41,6 @@ class MatillionHook(HttpHook):
     CANCELLED = "CANCELLED"
     QUEUED = "QUEUED"
     FAILED = "FAILED"
-    #ERROR = "error"
-    #INCOMPLETE = "incomplete"
 
     def __init__(self, group_name: str, project_name: str, job_name: str, environment_Name: str, matillion_conn_id: str = "Matillion") -> None:
         super().__init__(http_conn_id=matillion_conn_id)
@@ -121,7 +120,7 @@ class MatillionHook(HttpHook):
         """
         Get the resource representation for a job in Matillion.
 
-        :param job_id: Required. Id of the Airbyte job
+        :param job_id: Required. Id of the Matillion job
         """
         self.method = "GET"
         endpoint=f"rest/v1/group/name/" + self.group_name + "/project/name/" + self.project_name + "/task/id/" + str(job_id)
@@ -149,7 +148,7 @@ class MatillionHook(HttpHook):
         """
         Cancel the job when task is cancelled.
 
-        :param job_id: Required. Id of the Airbyte job
+        :param job_id: Required. Id of the Matillion job
         """
         self.method = "POST"
         endpoint=f"rest/v1/group/name/" + self.group_name + "/project/name/" + self.project_name + "/task/id/" + str(job_id) + "/cancel"
