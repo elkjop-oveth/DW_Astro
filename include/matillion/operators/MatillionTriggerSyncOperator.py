@@ -15,6 +15,9 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+
+# Source code based on Airbyte code https://airflow.apache.org/docs/apache-airflow-providers-airbyte/1.0.0/_api/airflow/providers/airbyte/index.html
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Sequence
@@ -66,6 +69,8 @@ class MatillionTriggerSyncOperator(BaseOperator):
 
         self.log.info("Job %s was submitted to Matillion Server", self.job_id)
         self.log.info("Waiting for job %s to complete", self.job_id)
+        matillion_job_log_url = self.hook.base_url + f"/#" + self.group_name + f"/" + self.project_name + f"/default/" + self.job_name + f"/run/" + str(self.job_id)
+        self.log.info(f"Matillion log URL: " + matillion_job_log_url)
         self.hook.wait_for_job(job_id=self.job_id, wait_seconds=self.wait_seconds, timeout=self.timeout)
         self.log.info("Job %s completed successfully", self.job_id)
 
@@ -74,5 +79,5 @@ class MatillionTriggerSyncOperator(BaseOperator):
     def on_kill(self):
         """Cancel the job if task is cancelled."""
         if self.job_id:
-            self.log.info("on_kill: cancel the airbyte Job %s", self.job_id)
+            self.log.info("on_kill: cancel the Matillion Job %s", self.job_id)
             self.hook.cancel_job(self.job_id)
