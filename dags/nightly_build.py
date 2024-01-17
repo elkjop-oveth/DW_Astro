@@ -5,6 +5,9 @@ from airflow import DAG
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from include.matillion.operators.MatillionTriggerSyncOperator import MatillionTriggerSyncOperator
+import os 
+import certifi
+os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
 
 dag = DAG('DW_nightly_build', description='Matillion nightly execution',
           schedule_interval=None,
