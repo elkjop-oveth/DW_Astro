@@ -15,9 +15,7 @@ dag = DAG('BONUS_MonitorRT', description='BONUS_MonitorRT matillion job',
           )
 
 m_Start = EmptyOperator(task_id='Start', dag=dag)
-m_End = EmptyOperator(task_id='End', trigger_rule='all_done', dag=dag)
 m_BONUS_MonitorRT = MatillionTriggerSyncOperator(task_id='BONUS_MonitorRT', job_name='BONUS_MonitorRT', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done', dag=dag)
 
 m_BONUS_MonitorRT << m_Start
-m_End << m_BONUS_MonitorRT
 

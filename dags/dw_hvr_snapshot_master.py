@@ -15,8 +15,6 @@ dag = DAG('DW_HVR_SNAPSHOT_MASTER', description='DW_HVR_SNAPSHOT_MASTER matillio
           )
 
 m_Start = EmptyOperator(task_id='Start', dag=dag)
-m_End = EmptyOperator(task_id='End', trigger_rule='all_done', dag=dag)
 m_DW_HVR_SNAPSHOT_MASTER = MatillionTriggerSyncOperator(task_id='DW_HVR_SNAPSHOT_MASTER', job_name='DW_HVR_SNAPSHOT_MASTER', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done', dag=dag)
 
 m_DW_HVR_SNAPSHOT_MASTER << m_Start
-m_End << m_DW_HVR_SNAPSHOT_MASTER

@@ -15,9 +15,6 @@ dag = DAG('GA4_intraday_Main', description='GA4_intraday_Main matillion job',
           )
 
 m_Start = EmptyOperator(task_id='Start', dag=dag)
-m_End = EmptyOperator(task_id='End', trigger_rule='all_done', dag=dag)
 m_GA4_intraday_Main = MatillionTriggerSyncOperator(task_id='GA4_intraday_Main', job_name='GA4_intraday_Main', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done', dag=dag)
 
 m_GA4_intraday_Main << m_Start
-m_End << m_GA4_intraday_Main
-
