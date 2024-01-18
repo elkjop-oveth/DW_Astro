@@ -50,10 +50,10 @@ class MatillionHook(HttpHook):
         self.project_name: str = project_name
         self.job_name: str = job_name
         self.environment_Name: str = environment_Name
-        self.extra_options={"verify": "/usr/local/lib/python3.11/site-packages/certifi/cacert.pem","timeout": 120}
+        self.extra_options={"verify": "/usr/local/airflow/certs/cacerts.pem","timeout": 120}
         self.log.info("extra_options: " + str(self.extra_options))
         self.log.info("extra_options: " + str(self.extra_options.get("verify")))
-        self.log.info("abspath: " + str(os.path.abspath("./")))
+        self.log.info("abspath: " + str(os.path.abspath("./certs")))
 
     def submit_sync_connection(self) -> Any:
         """
