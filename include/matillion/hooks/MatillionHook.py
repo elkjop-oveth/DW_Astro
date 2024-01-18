@@ -50,6 +50,7 @@ class MatillionHook(HttpHook):
         self.job_name: str = job_name
         self.environment_Name: str = environment_Name
         self.extra_options={"verify": True,"cert":certifi.where() ,"timeout": 120}
+         self.log.info("certifi.where(): " + str(certifi.where()))
 
     def submit_sync_connection(self) -> Any:
         """
