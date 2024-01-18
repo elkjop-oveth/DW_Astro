@@ -16,9 +16,6 @@ dag = DAG('DW_CUSTOMER_TAB', description='DW_CUSTOMER_TAB matillion job',
           )
 
 m_Start = EmptyOperator(task_id='Start', dag=dag)
-m_End = EmptyOperator(task_id='End', trigger_rule='all_done', dag=dag)
 m_DW_CUSTOMER_TAB = MatillionTriggerSyncOperator(task_id='DW_CUSTOMER_TAB', job_name='DW_CUSTOMER_TAB', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done', dag=dag)
 
 m_DW_CUSTOMER_TAB << m_Start
-m_End << m_DW_CUSTOMER_TAB
-
