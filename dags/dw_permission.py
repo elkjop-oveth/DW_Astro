@@ -15,9 +15,6 @@ dag = DAG('DW_PERMISSION', description='DW_PERMISSION matillion job',
           )
 
 m_Start = EmptyOperator(task_id='Start', dag=dag)
-m_End = EmptyOperator(task_id='End', trigger_rule='all_done', dag=dag)
 m_DW_PERMISSION = MatillionTriggerSyncOperator(task_id='DW_PERMISSION', job_name='DW_PERMISSION', group_name='DW', project_name='DW', environment_name='Production', trigger_rule='all_done', dag=dag)
 
 m_DW_PERMISSION << m_Start
-m_End << m_DW_PERMISSION
-
