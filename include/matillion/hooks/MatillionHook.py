@@ -29,6 +29,7 @@ from airflow.providers.http.hooks.http import HttpHook
 import tenacity
 # oveth added 20240117
 import certifi
+import os 
 
 
 class MatillionHook(HttpHook):
@@ -52,6 +53,7 @@ class MatillionHook(HttpHook):
         self.extra_options={"verify": "/usr/local/lib/python3.11/site-packages/certifi/cacert.pem","timeout": 120}
         self.log.info("extra_options: " + str(self.extra_options))
         self.log.info("extra_options: " + str(self.extra_options.get("verify")))
+        self.log.info("abspath: " + str(os.path.abspath("./")))
 
     def submit_sync_connection(self) -> Any:
         """
